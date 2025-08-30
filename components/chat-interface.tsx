@@ -101,6 +101,10 @@ export function ChatInterface() {
             <h1 className="text-xl font-semibold">NoCodeChatGPT</h1>
             <p className="text-sm text-muted-foreground">Powered by Google Gemini</p>
           </div>
+          <div className="ml-auto text-right">
+            <p className="text-sm text-muted-foreground">学生番号: 22M25202</p>
+            <p className="text-sm text-muted-foreground">名前: 平松　孝博</p>
+          </div>
         </div>
       </div>
 
