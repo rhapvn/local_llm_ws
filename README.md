@@ -1,127 +1,91 @@
-# ローカルLLM体験ワークショップ：Ollama & DeepSeek編
+# NoCodeChatGPT with Google Gemini
 
-![構成図](./demo-image/ollama.png)
+A modern chat interface powered by Google Gemini AI, built with Next.js and TypeScript.
 
----
+## Features
 
-## 📋 事前準備チェックリスト（重要！）
+- 🤖 Chat with Google Gemini AI
+- 💬 Real-time conversation interface
+- 🎨 Modern, responsive UI built with shadcn/ui
+- 🔒 Secure API key management
+- 📱 Mobile-friendly design
 
-### ✅ 事前インストール必須項目
-- [ ] **Ollama本体** (約980MB) - 必ず事前にインストール
-- [ ] **LLMモデル** (約2.2GB) - 必ず事前にダウンロード  
-- [ ] **Python 3.7以上**
-- [ ] **requests ライブラリ**
+## Prerequisites
 
----
+- Node.js 18+
+- Google Gemini API key
 
-## 🚀 セットアップ手順
+## Setup
 
-### 1️⃣ Ollamaのインストール
+1. **Clone the repository**
 
-[公式サイトからダウンロード](https://ollama.com/download)
+   ```bash
+   git clone <your-repo-url>
+   cd local_llm_ws
+   ```
 
-**Windows の場合:**
-1. `ollama-windows.exe` をダウンロード
-2. ダブルクリックで実行
-3. インストール完了まで待つ
+2. **Install dependencies**
 
-**Mac の場合:**
-```bash
-brew install ollama
-```
+   ```bash
+   npm install
+   ```
 
-または [公式サイト](https://ollama.com/download) からダウンロード
+3. **Set up environment variables**
+   Create a `.env.local` file in the root directory:
 
-![インストール画面](./demo-image/image.png)
+   ```env
+   GEMINI_API_KEY=your_gemini_api_key_here
+   ```
 
-### 2️⃣ LLMモデルのダウンロード
+   To get a Gemini API key:
 
-コマンドプロンプト/ターミナルで実行：
+   - Go to [Google AI Studio](https://aistudio.google.com/)
+   - Sign in with your Google account
+   - Create a new API key
+   - Copy the key to your `.env.local` file
 
-```bash
-# モデルをダウンロード（約2.2GB、時間がかかります）
-ollama pull phi3
+4. **Run the development server**
 
-# モデルが正常に動作するかテスト
-ollama run phi3
-```
+   ```bash
+   npm run dev
+   ```
 
-![モデル実行画面](./demo-image/ollama.png)
+5. **Open your browser**
+   Navigate to [http://localhost:3000](http://localhost:3000)
 
-### 3️⃣ Python環境のセットアップ
+## Usage
 
-```bash
-# 仮想環境の作成
-python -m venv .venv
+1. Type your message in the input field
+2. Press Enter or click the Send button
+3. Gemini AI will respond to your message
+4. Continue the conversation as needed
 
-# 仮想環境の有効化
-# Windows の場合:
-.venv\Scripts\activate
+## API Endpoints
 
-# Mac/Linux の場合:
-source .venv/bin/activate
+- `POST /api/gemini` - Send messages to Gemini AI
+  - Body: `{ "message": "your message here" }`
+  - Response: `{ "response": "AI response", "model": "gemini-2.0-flash" }`
 
-# 成功すると先頭に (.venv) が表示される
-# 例: (.venv) PS C:\Users\username\local_llm_ws>
+## Architecture
 
-# 必要なライブラリをインストール
-pip install requests
-```
+- **Frontend**: Next.js 14 with TypeScript
+- **UI Components**: shadcn/ui components
+- **AI Service**: Google Gemini API
+- **Styling**: Tailwind CSS
 
-### 4️⃣ サンプルプログラムの実行
+## Troubleshooting
 
-```bash
-# プログラムを実行
-python test.py
+- **"Gemini API key not configured"**: Make sure you have created a `.env.local` file with your `GEMINI_API_KEY`
+- **API errors**: Verify your API key is valid and has sufficient quota
+- **Rate limiting**: Gemini API has rate limits; wait a moment before sending another message
 
-# 質問を入力してEnter
-# 例: "Pythonとは何ですか？"
-```
+## Development
 
----
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run start` - Start production server
+- `npm run lint` - Run ESLint
 
-## 📁 ファイル構成
+## License
 
-```
-local_llm_ws/
-├── README.md           # このファイル
-├── test.py            # サンプルプログラム
-├── slide.html         # プレゼン資料
-├── 目次.md             # 学習内容の目次
-└── demo-image/        # 画像フォルダ
-```
-
----
-
-## 🛠️ トラブルシューティング
-
-### よくある問題と解決方法
-
-**Q: `ollama pull` でエラーが出る**
-- A: インターネット接続を確認し、時間をおいて再実行
-
-**Q: `python test.py` でエラーが出る**  
-- A: 仮想環境が有効化されているか確認
-- A: `pip install requests` が実行済みか確認
-
-**Q: AI が応答しない**
-- A: `ollama run phi3` でモデルが起動しているか確認
-- A: `http://localhost:11434` にアクセスできるか確認
-
----
-
-## 📚 学習コンテンツ
-
-- **[プレゼン資料](./slide.html)** - ワークショップ用スライド
-- **[学習目次](./目次.md)** - LLM/RAG/AIエージェントの概要
-
----
-
-## 💡 ワークショップの流れ
-
-1. **環境確認** - セットアップが完了しているか確認
-2. **基礎理論** - LLM/RAG/AIエージェントの学習
-3. **実践演習** - サンプルコードの実行と改良
-4. **応用課題** - オリジナル機能の実装
-
-準備完了したら講師にお声かけください！
+MIT
