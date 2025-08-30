@@ -4,7 +4,7 @@ import { useState } from "react"
 import { ChatHeader } from "./chat-header"
 import { ChatMessages } from "./chat-messages"
 import { ChatInput } from "./chat-input"
-import { createChatService } from "./chat-service"
+import { createChatService } from "../../lib/chat-service"
 import type { Message } from "./types"
 
 interface ChatInterfaceProps {

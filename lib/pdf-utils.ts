@@ -67,17 +67,8 @@ export class PDFUtils {
         };
       }
 
-      // For now, let's just return a simple result to test if the flow works
-      console.log("PDF arrayBuffer created successfully, returning test result");
-      return {
-        text: `PDF file: ${file.name} (${file.size} bytes) - Content extracted successfully`,
-        pages: 1,
-      };
-
-      // Comment out the actual PDF processing for now
-      /*
       // Load the PDF document with timeout
-      console.log('Creating PDF loading task...')
+      console.log("Creating PDF loading task...");
       const loadingTask = this.pdfjsLib.getDocument({
         data: arrayBuffer,
         // Add some options to improve compatibility
@@ -86,11 +77,9 @@ export class PDFUtils {
         disableStream: true,
       });
 
-      console.log('Waiting for PDF to load...')
+      console.log("Waiting for PDF to load...");
       const pdf = await loadingTask.promise;
-      */
 
-      /*
       const numPages = pdf.numPages;
       console.log(`PDF loaded successfully, pages: ${numPages}`);
 
@@ -141,7 +130,6 @@ export class PDFUtils {
       }
 
       return result;
-      */
     } catch (error) {
       console.error("Error extracting text from PDF:", error);
 

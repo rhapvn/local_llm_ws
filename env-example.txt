@@ -1,0 +1,6 @@
+# Environment Variables for RAG System
+
+# Google Gemini API Key (REQUIRED)
+# Get your API key from: https://makersuite.google.com/app/apikey
+# IMPORTANT: Do NOT use NEXT_PUBLIC_ prefix - this keeps the key server-side only
+GEMINI_API_KEY=your_actual_api_key_here
