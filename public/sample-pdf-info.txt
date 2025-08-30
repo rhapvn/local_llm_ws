@@ -1,0 +1,34 @@
+PDF Testing Information
+
+To test the PDF functionality in the RAG system:
+
+1. Create a simple PDF file with text content
+2. Upload it to the sidebar
+3. The system will automatically extract text and index it
+4. You can then ask questions about the PDF content
+
+Expected PDF Features:
+- Text extraction from all pages
+- Page count display
+- Error handling for invalid PDFs
+- File size validation (10MB limit)
+- Automatic text chunking and indexing
+
+PDF Processing Notes:
+- Complex layouts may not preserve formatting perfectly
+- Tables and images are not currently supported
+- Text extraction works best with simple text-based PDFs
+- Processing time depends on PDF size and complexity
+
+Test PDF Creation:
+You can create a test PDF using:
+- Microsoft Word (Save as PDF)
+- Google Docs (Download as PDF)
+- Online PDF converters
+- Any text editor that supports PDF export
+
+The system will show:
+- File icon (PDF vs TXT)
+- Page count for PDFs
+- Character count after text extraction
+- Processing status and any errors

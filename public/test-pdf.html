@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PDF.js Test</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      .test-section {
+        margin: 20px 0;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+      .file-input {
+        margin: 10px 0;
+      }
+      .result {
+        margin: 10px 0;
+        padding: 10px;
+        background-color: #f5f5f5;
+        border-radius: 3px;
+        white-space: pre-wrap;
+      }
+      .error {
+        color: red;
+      }
+      .success {
+        color: green;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>PDF.js Test Page</h1>
+
+    <div class="test-section">
+      <h2>PDF Text Extraction Test</h2>
+      <p>Upload a PDF file to test the text extraction functionality:</p>
+
+      <input type="file" id="pdfFile" accept=".pdf" class="file-input" />
+      <button onclick="testPDF()">Test PDF</button>
+
+      <div id="result" class="result"></div>
+    </div>
+
+    <div class="test-section">
+      <h2>PDF.js Status</h2>
+      <div id="status"></div>
+    </div>
+
+    <script type="module">
+      let pdfjsLib = null;
+      let isInitialized = false;
+
+      async function initPDFJS() {
+        try {
+          if (isInitialized) return;
+
+          console.log("Initializing PDF.js...");
+          const module = await import("https://cdn.jsdelivr.net/npm/pdfjs-dist@4.0.379/+esm");
+          pdfjsLib = module;
+
+          // Use fake worker
+          pdfjsLib.GlobalWorkerOptions.workerSrc = false;
+
+          isInitialized = true;
+          console.log("PDF.js initialized successfully");
+          updateStatus("PDF.js initialized successfully", "success");
+        } catch (error) {
+          console.error("Failed to initialize PDF.js:", error);
+          updateStatus(`PDF.js initialization failed: ${error.message}`, "error");
+        }
+      }
+
+      async function testPDF() {
+        const fileInput = document.getElementById("pdfFile");
+        const file = fileInput.files[0];
+
+        if (!file) {
+          updateResult("Please select a PDF file first.", "error");
+          return;
+        }
+
+        if (!isInitialized) {
+          await initPDFJS();
+        }
+
+        if (!isInitialized) {
+          updateResult("PDF.js is not initialized.", "error");
+          return;
+        }
+
+        try {
+          updateResult("Processing PDF...", "");
+
+          const arrayBuffer = await file.arrayBuffer();
+          const loadingTask = pdfjsLib.getDocument({
+            data: arrayBuffer,
+            disableFontFace: true,
+            disableRange: true,
+            disableStream: true,
+          });
+
+          const pdf = await loadingTask.promise;
+          const numPages = pdf.numPages;
+
+          let fullText = "";
+          let pagesWithText = 0;
+
+          for (let pageNum = 1; pageNum <= numPages; pageNum++) {
+            try {
+              const page = await pdf.getPage(pageNum);
+              const textContent = await page.getTextContent();
+              const pageText = textContent.items.map((item) => item.str).join(" ");
+
+              if (pageText.trim().length > 0) {
+                pagesWithText++;
+                fullText += `--- Page ${pageNum} ---\n${pageText}\n\n`;
+              }
+            } catch (pageError) {
+              console.warn(`Error processing page ${pageNum}:`, pageError);
+            }
+          }
+
+          const result = `PDF processed successfully!\n\nFile: ${file.name}\nSize: ${file.size} bytes\nPages: ${numPages}\nPages with text: ${pagesWithText}\n\nExtracted text (first 1000 chars):\n${fullText.substring(
+            0,
+            1000
+          )}${fullText.length > 1000 ? "..." : ""}`;
+
+          updateResult(result, "success");
+        } catch (error) {
+          console.error("Error processing PDF:", error);
+          updateResult(`Error processing PDF: ${error.message}`, "error");
+        }
+      }
+
+      function updateResult(message, type) {
+        const resultDiv = document.getElementById("result");
+        resultDiv.textContent = message;
+        resultDiv.className = `result ${type}`;
+      }
+
+      function updateStatus(message, type) {
+        const statusDiv = document.getElementById("status");
+        statusDiv.textContent = message;
+        statusDiv.className = type;
+      }
+
+      // Initialize on page load
+      window.addEventListener("load", () => {
+        updateStatus("Page loaded, ready to initialize PDF.js", "");
+        initPDFJS();
+      });
+    </script>
+  </body>
+</html>
